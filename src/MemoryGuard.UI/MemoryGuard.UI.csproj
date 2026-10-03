@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MemoryGuard.Core\MemoryGuard.Core.csproj" />
+    <ProjectReference Include="..\MemoryGuard.System\MemoryGuard.System.csproj" />
+    <ProjectReference Include="..\MemoryGuard.Security\MemoryGuard.Security.csproj" />
+    <ProjectReference Include="..\MemoryGuard.Monitoring\MemoryGuard.Monitoring.csproj" />
+    <ProjectReference Include="..\MemoryGuard.Cleanup\MemoryGuard.Cleanup.csproj" />
+    <ProjectReference Include="..\MemoryGuard.Settings\MemoryGuard.Settings.csproj" />
+  </ItemGroup>
+
+</Project>

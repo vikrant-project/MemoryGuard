@@ -1,0 +1,19 @@
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
+     xmlns:bal="http://wixtoolset.org/schemas/v4/wxs/bal">
+  <Bundle Name="MemoryGuard"
+          Manufacturer="MemoryGuard Systems"
+          Version="1.0.0"
+          UpgradeCode="F92C5A14-38BE-4DE9-B09A-387D0951C81E"
+          IconSourceFile="C:\memory-cleaner\src\MemoryGuard.App\Resources\app.ico">
+    <BootstrapperApplication>
+      <bal:WixStandardBootstrapperApplication
+        Theme="rtfLicense"
+        LicenseFile="C:\memory-cleaner\installer\license.rtf"
+        LogoFile="C:\memory-cleaner\src\MemoryGuard.App\Resources\app.png" />
+    </BootstrapperApplication>
+    <Chain>
+      <MsiPackage SourceFile="C:\memory-cleaner\artifacts\MemoryGuard-Setup-x64.msi"
+                  Vital="yes" />
+    </Chain>
+  </Bundle>
+</Wix>

@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MemoryGuard.Core\MemoryGuard.Core.csproj" />
+    <ProjectReference Include="..\MemoryGuard.System\MemoryGuard.System.csproj" />
+    <ProjectReference Include="..\MemoryGuard.Security\MemoryGuard.Security.csproj" />
+    <ProjectReference Include="..\MemoryGuard.Settings\MemoryGuard.Settings.csproj" />
+  </ItemGroup>
+
+</Project>

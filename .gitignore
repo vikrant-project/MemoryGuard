@@ -1,0 +1,28 @@
+## Visual Studio / .NET Build Artifacts
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+artifacts/
+!artifacts/portable/app.ico
+
+## Visual Studio Cache & User Files
+.vs/
+*.user
+*.userprefs
+*.suo
+*.sln.docstates
+*.userosscache
+
+## OS Generated Files
+Thumbs.db
+ehthumbs.db
+[Dd]esktop.ini
+$RECYCLE.BIN/
+.DS_Store
+
+## Temporary Files
+*.tmp
+*~
+*.bak
+*.swp

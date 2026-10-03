@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <AssemblyName>MemoryGuard</AssemblyName>
+    <Version>1.0.0</Version>
+    <FileVersion>1.0.0.0</FileVersion>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <Product>MemoryGuard</Product>
+    <Company>MemoryGuard Systems</Company>
+    <Authors>MemoryGuard Engineering Team</Authors>
+    <Description>Smart Windows Memory Optimizer and Real-Time Resource Monitor</Description>
+    <Copyright>Copyright © 2026 MemoryGuard Systems. All rights reserved.</Copyright>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ApplicationHighDpiMode>PerMonitorV2</ApplicationHighDpiMode>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>Resources\app.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\app.ico" />
+    <Resource Include="Resources\app.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MemoryGuard.Core\MemoryGuard.Core.csproj" />
+    <ProjectReference Include="..\MemoryGuard.Settings\MemoryGuard.Settings.csproj" />
+    <ProjectReference Include="..\MemoryGuard.System\MemoryGuard.System.csproj" />
+    <ProjectReference Include="..\MemoryGuard.Security\MemoryGuard.Security.csproj" />
+    <ProjectReference Include="..\MemoryGuard.Monitoring\MemoryGuard.Monitoring.csproj" />
+    <ProjectReference Include="..\MemoryGuard.Cleanup\MemoryGuard.Cleanup.csproj" />
+    <ProjectReference Include="..\MemoryGuard.UI\MemoryGuard.UI.csproj" />
+  </ItemGroup>
+
+</Project>

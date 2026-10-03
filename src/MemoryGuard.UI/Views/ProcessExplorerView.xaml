@@ -1,0 +1,121 @@
+<UserControl x:Class="MemoryGuard.UI.Views.ProcessExplorerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:conv="clr-namespace:MemoryGuard.UI.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="700" d:DesignWidth="900"
+             FontFamily="{StaticResource AppFont}">
+
+    <UserControl.Resources>
+        <conv:BytesToReadableSizeConverter x:Key="BytesConv" />
+        <conv:PercentToBrushConverter x:Key="PercentBrushConv" />
+        <conv:RiskToBrushConverter x:Key="RiskBrushConv" />
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Search & Quick Filters Header -->
+        <Border Grid.Row="0" Style="{StaticResource CardStyle}" Padding="14,10" Margin="0,0,0,12">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="260" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Search Input -->
+                <TextBox Grid.Column="0" 
+                         Style="{StaticResource SearchTextBoxStyle}" 
+                         Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" 
+                         VerticalAlignment="Center" />
+
+                <!-- Filter Chips -->
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="16,0,0,0">
+                    <RadioButton Content="All" IsChecked="True" Style="{StaticResource NavButtonStyle}" 
+                                 Command="{Binding DataContext.SetFilterCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="All" />
+                    <RadioButton Content="User Apps" Style="{StaticResource NavButtonStyle}" 
+                                 Command="{Binding DataContext.SetFilterCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="UserApps" />
+                    <RadioButton Content="High RAM (>200MB)" Style="{StaticResource NavButtonStyle}" 
+                                 Command="{Binding DataContext.SetFilterCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="HighMemory" />
+                    <RadioButton Content="Possible Leaks" Style="{StaticResource NavButtonStyle}" 
+                                 Command="{Binding DataContext.SetFilterCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="Leaks" />
+                    <RadioButton Content="Protected" Style="{StaticResource NavButtonStyle}" 
+                                 Command="{Binding DataContext.SetFilterCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="Protected" />
+                </StackPanel>
+
+                <!-- Refresh Button -->
+                <Button Grid.Column="2" Content="↻ Refresh" Style="{StaticResource SecondaryButtonStyle}" 
+                        Command="{Binding RefreshCommand}" VerticalAlignment="Center" />
+            </Grid>
+        </Border>
+
+        <!-- Process Action Toolbar -->
+        <Border Grid.Row="1" Style="{StaticResource CardStyle}" Padding="12,8" Margin="0,0,0,10">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <Button Content="Close Gracefully" Style="{StaticResource PrimaryButtonStyle}" 
+                        Command="{Binding CloseGracefulCommand}" Margin="0,0,8,0" />
+                <Button Content="Force Terminate" Style="{StaticResource SecondaryButtonStyle}" 
+                        Command="{Binding TerminateForceCommand}" Margin="0,0,8,0" />
+                <Button Content="Mark 'Never Close'" Style="{StaticResource SecondaryButtonStyle}" 
+                        Command="{Binding SetProtectionNeverCloseCommand}" Margin="0,0,8,0" />
+                <Button Content="Mark 'Normal'" Style="{StaticResource SecondaryButtonStyle}" 
+                        Command="{Binding SetProtectionNormalCommand}" Margin="0,0,8,0" />
+                <Button Content="Reveal in Explorer" Style="{StaticResource SecondaryButtonStyle}" 
+                        Command="{Binding RevealInExplorerCommand}" />
+            </StackPanel>
+        </Border>
+
+        <!-- Process DataGrid Table -->
+        <Border Grid.Row="2" Style="{StaticResource CardStyle}" Padding="0">
+            <DataGrid ItemsSource="{Binding FilteredProcesses}" 
+                      SelectedItem="{Binding SelectedProcess}"
+                      AutoGenerateColumns="False" 
+                      IsReadOnly="True" 
+                      HeadersVisibility="Column"
+                      GridLinesVisibility="Horizontal"
+                      HorizontalGridLinesBrush="{DynamicResource SurfaceBorderBrush}"
+                      Background="Transparent"
+                      RowBackground="Transparent"
+                      Foreground="{DynamicResource TextPrimaryBrush}"
+                      BorderThickness="0"
+                      SelectionMode="Single"
+                      CanUserSortColumns="True">
+                
+                <DataGrid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Close Gracefully" Command="{Binding CloseGracefulCommand}" />
+                        <MenuItem Header="Force Terminate (When Allowed)" Command="{Binding TerminateForceCommand}" />
+                        <Separator />
+                        <MenuItem Header="Protection: Never Close" Command="{Binding SetProtectionNeverCloseCommand}" />
+                        <MenuItem Header="Protection: Ask Before Closing" Command="{Binding SetProtectionAskCommand}" />
+                        <MenuItem Header="Protection: Normal" Command="{Binding SetProtectionNormalCommand}" />
+                        <Separator />
+                        <MenuItem Header="Reveal in File Explorer" Command="{Binding RevealInExplorerCommand}" />
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
+
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Application" Binding="{Binding ProcessName}" Width="160" FontWeight="SemiBold" />
+                    <DataGridTextColumn Header="PID" Binding="{Binding ProcessId}" Width="65" />
+                    <DataGridTextColumn Header="RAM" Binding="{Binding WorkingSetBytes, Converter={StaticResource BytesConv}}" Width="95" FontWeight="SemiBold" />
+                    <DataGridTextColumn Header="Private" Binding="{Binding PrivateBytes, Converter={StaticResource BytesConv}}" Width="85" />
+                    <DataGridTextColumn Header="CPU" Binding="{Binding CpuPercent, StringFormat={}{0:F1}%}" Width="65" />
+                    <DataGridTextColumn Header="Risk" Binding="{Binding Risk}" Width="80" />
+                    <DataGridTextColumn Header="Protection" Binding="{Binding UserProtection}" Width="110" />
+                    <DataGridTextColumn Header="Safety Status / Reason" Binding="{Binding SafetyReason}" Width="*" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
+
+        <!-- Status Bar -->
+        <TextBlock Grid.Row="3" Text="{Binding StatusMessage}" FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}" Margin="6,6,0,0" />
+    </Grid>
+</UserControl>
